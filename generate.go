@@ -16,7 +16,7 @@ func generate(length int, valid charset) (string, error) {
 		char, err := randElem(valid)
 		if err != nil {
 			// Record error
-			errs := append(errs, err)
+			errs = append(errs, err)
 			// Tolerate up to 50% error rate, and at least 5
 			if len(errs) > max(length/2, 5) {
 				return "", tooMany(errs)
@@ -33,6 +33,10 @@ func generate(length int, valid charset) (string, error) {
 func randElem(set charset) (rune, error) {
 	// Create a list to choose a random index from
 	list := getlist(set)
+
+	if len(list) == 0 {
+		return ' ', errors.New("randElem: Character set empty. Check character set generation.")
+	}
 
 	// Set the maximum index to choose - casting to big int for crypto/rand
 	max := big.NewInt(int64(len(list)))
@@ -53,7 +57,7 @@ func randElem(set charset) (rune, error) {
 // max gets the maximum value of a list of values
 func max(is ...int) int {
 	m := 0
-	for i := range is {
+	for _, i := range is {
 		if i > m {
 			m = i
 		}
