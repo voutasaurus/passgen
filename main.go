@@ -26,9 +26,9 @@ func main() {
 	// Specify desired character sets
 	charSubsets := map[string]bool{
 		"alphabet": true,
-		"digit": true,
-		"special": true,
-		"space": false,
+		"digit":    true,
+		"special":  true,
+		"space":    false,
 	}
 
 	// generate the password

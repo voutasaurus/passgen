@@ -68,34 +68,39 @@ func valid(charSubsets map[string]bool) charset {
 
 // union takes the union of any number of sets of runes
 func union(sets ...charset) charset {
-	ret := make(charset)
+	unionSet := make(charset)
 	for _, set := range sets {
-		for elem := range set {
-			ret[elem] = true
+		for elem, in := range set {
+			// If it's in this set or already in unionSet
+			unionSet[elem] = in || unionSet[elem]
 		}
 	}
-	return ret
+	return unionSet
 }
 
 // getList turns a set of runes into a slice of runes
 func getlist(set charset) []rune {
 	list := make([]rune, 0, len(set))
-	for elem := range set {
-		list = append(list, elem)
+	for elem, in := range set {
+		if in {
+			list = append(list, elem)
+		}
 	}
 	return list
 }
 
 // Pretty printing for debug
 func (set charset) String() string {
-	ret := "charset{"
-	for c := range set {
-		ret += "'"
-		ret += fmt.Sprintf("%c", c)
-		ret += "'"
-		ret += ", "
+	display := "charset{"
+	for c, in := range set {
+		if in {
+			display += "'"
+			display += fmt.Sprintf("%c", c)
+			display += "'"
+			display += ", "
+		}
 	}
-	ret = ret[:len(ret)-2]
-	ret += "}"
-	return ret
+	display = display[:len(display)-2]
+	display += "}"
+	return display
 }
