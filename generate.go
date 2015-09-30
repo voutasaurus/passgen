@@ -37,7 +37,8 @@ func randElem(set charset) (rune, error) {
 	// Set the maximum index to choose - casting to big int for crypto/rand
 	max := big.NewInt(int64(len(list)))
 
-	// Generate a random index (See godoc for crypto/rand for info)
+	// Generate a random index 
+	// crypto/rand.Int generates a number in [0,max) - See godoc for crypto/rand for more info
 	i, err := rand.Int(rand.Reader, max)
 
 	// Error reading from os random source
