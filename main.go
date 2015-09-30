@@ -23,8 +23,16 @@ func main() {
 		return
 	}
 
+	// Specify desired character sets
+	charSubsets := map[string]bool{
+		"alphabet": true,
+		"digit": true,
+		"special": true,
+		"space": false,
+	}
+
 	// generate the password
-	password, err := generate(length, valid())
+	password, err := generate(length, valid(charSubsets))
 	if err != nil {
 		fmt.Println("Could not generate a random password successfully.")
 		fmt.Println(err)

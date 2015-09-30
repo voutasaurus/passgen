@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"errors"
 	"crypto/rand"
+	"errors"
+	"fmt"
 	"math/big"
 )
 
@@ -18,7 +18,7 @@ func generate(length int, valid charset) (string, error) {
 			// Record error
 			errs := append(errs, err)
 			// Tolerate up to 50% error rate, and at least 5
-			if len(errs) > max(length / 2, 5) {
+			if len(errs) > max(length/2, 5) {
 				return "", tooMany(errs)
 			}
 		} else {
@@ -37,7 +37,7 @@ func randElem(set charset) (rune, error) {
 	// Set the maximum index to choose - casting to big int for crypto/rand
 	max := big.NewInt(int64(len(list)))
 
-	// Generate a random index 
+	// Generate a random index
 	// crypto/rand.Int generates a number in [0,max) - See godoc for crypto/rand for more info
 	i, err := rand.Int(rand.Reader, max)
 

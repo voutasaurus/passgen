@@ -48,9 +48,22 @@ var space = charset{
 	' ': true,
 }
 
+var charsFrom = map[string]charset{
+	"alphabet": alphabet,
+	"digit":    digit,
+	"special":  special,
+	"space":    space,
+}
+
 // valid returns a character set containing all of the valid characters
-func valid() charset {
-	return union(alphabet, digit, special, space)
+func valid(charSubsets map[string]bool) charset {
+	sets := []charset{}
+	for subset, include := range charSubsets {
+		if include {
+			sets = append(sets, charsFrom[subset])
+		}
+	}
+	return union(sets...)
 }
 
 // union takes the union of any number of sets of runes
