@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"errors"
+)
 
 type charset map[rune]bool
 
@@ -53,6 +56,27 @@ var charsFrom = map[string]charset{
 	"digit":    digit,
 	"special":  special,
 	"space":    space,
+}
+
+// getCharSubsets returns the charSubsets based on input
+// Cannot do spaces at this stage
+func getCharSubsets(sample string) (map[string]bool, error) {
+	if len(sample) > 3 {
+		return map[string]bool{}, errors.New("Too many characters. You only need 3 at most.")
+	}
+	charSubsets := map[string]bool{}
+	for _, c := range []rune(sample) {
+		if alphabet[c] {
+			charSubsets["alphabet"] = true
+		} else if digit[c] {
+			charSubsets["digit"] = true
+		} else if special[c] {
+			charSubsets["special"] = true
+		} else {
+			return map[string]bool{}, errors.New("Invalid character used: '" + string(c) + "'")
+		}
+	}
+	return charSubsets, nil
 }
 
 // valid returns a character set containing all of the valid characters
