@@ -41,12 +41,16 @@ var digit = charset{
 var special = charset{
 	'~': true, '!': true, '@': true, '#': true, '$': true, '%': true, '^': true, '&': true, '*': true, '(': true, ')': true,
 	'-': true, '_': true, '+': true, '=': true, '{': true, '}': true, '[': true, ']': true, '\\': true, '|': true, ':': true,
-	';': true, '\'': true, '"': true, ',': true, '<': true, '.': true, '>': true, '?': true, '/': true, '`': true, ' ': true,
+	';': true, '\'': true, '"': true, ',': true, '<': true, '.': true, '>': true, '?': true, '/': true, '`': true,
+}
+
+var space = charset{
+	' ': true,
 }
 
 // valid returns a character set containing all of the valid characters
 func valid() charset {
-	return union(alphabet, digit, special)
+	return union(alphabet, digit, special, space)
 }
 
 // union takes the union of any number of sets of runes
