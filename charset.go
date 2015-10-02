@@ -103,7 +103,7 @@ func union(sets ...charset) charset {
 }
 
 // getList turns a set of runes into a slice of runes
-func getlist(set charset) []rune {
+func getList(set charset) []rune {
 	list := make([]rune, 0, len(set))
 	for elem, in := range set {
 		if in {

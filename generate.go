@@ -32,7 +32,7 @@ func generate(length int, valid charset) (string, error) {
 // randElem gets a random rune from a charset
 func randElem(set charset) (rune, error) {
 	// Create a list to choose a random index from
-	list := getlist(set)
+	list := getList(set)
 
 	if len(list) == 0 {
 		return ' ', errors.New("randElem: Character set empty. Check character set generation.")
