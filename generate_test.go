@@ -21,7 +21,7 @@ func TestGenerateLength(t *testing.T) {
 
 // generate(n, X) ⊆ X
 func TestGenerateContents(t *testing.T) {
-	sets := combinations(alphabet, digit, special, space)
+	sets := allSetsNonEmpty()
 
 	for _, set := range sets {
 		for i := 0; i < 100; i++ {
@@ -37,15 +37,6 @@ func TestGenerateContents(t *testing.T) {
 			}
 		}
 	}
-
-}
-
-// TO FIX: This is a temporary hack. 
-// There is a smarter more general way to do this
-func combinations(sets ...charset) []charset {
-	combos := []charset{}
-	combos = []charset{alphabet, digit, special, space, union(alphabet,digit), union(alphabet,special), union(alphabet,space), union(digit,special), union(digit,space), union(special,space), union(alphabet,digit, special), union(alphabet,digit, space), union(alphabet,special, space), union(digit,special,space), union(alphabet,digit,special,space)}
-	return combos
 }
 
 // generate(n, X) has no discernable pattern between subsequent calls
@@ -133,7 +124,7 @@ func TestMaxOfOne(t *testing.T) {
 	}
 }
 
-// max(a,b) = a ⟺ a > b
+// (max(a,b) = a) ⟺ (a > b)
 func TestMaxOfTwo(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		for j := 0; j < 10; j++ {

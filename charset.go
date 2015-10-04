@@ -115,6 +115,7 @@ func getList(set charset) []rune {
 
 // Pretty printing for debug
 func (set charset) String() string {
+	empty := true
 	display := "charset{"
 	for c, in := range set {
 		if in {
@@ -122,9 +123,12 @@ func (set charset) String() string {
 			display += fmt.Sprintf("%c", c)
 			display += "'"
 			display += ", "
+			empty = false
 		}
 	}
-	display = display[:len(display)-2]
+	if !empty {
+		display = display[:len(display)-2]		
+	}
 	display += "}"
 	return display
 }
