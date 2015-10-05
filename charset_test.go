@@ -106,12 +106,72 @@ func TestUnionOne(t *testing.T) {
 
 // c ∈ union(X,Y) ⟺ c ∈ X ∪ Y
 func TestUnionTwo(t *testing.T) {
-	t.Error("TestUnionTwo is not implemented")
+
+	sets := allSets()
+
+	for _, set1 := range sets {
+		for _, set2 := range sets {
+			uset := union(set1, set2)
+
+			for element, in := range uset {
+				if in && !set1[element] && !set2[element] {
+					t.Error("'"+string(element)+"' in union but not either of the arguments")
+					t.Log("X:", set1, "Y:", set2, "union(X,Y):", uset)			
+				}
+			}
+			for element, in := range set1 {
+				if in && !uset[element] {
+					t.Error("'"+string(element)+"' in first argument but not in union")
+					t.Log("X:", set1, "Y:", set2, "union(X,Y):", uset)			
+				}
+			}
+			for element, in := range set2 {
+				if in && !uset[element] {
+					t.Error("'"+string(element)+"' in second argument but not in union")
+					t.Log("X:", set1, "Y:", set2, "union(X,Y):", uset)			
+				}
+			}
+		}
+	}
+
 }
 
 // c ∈ union([X0,..,Xn]...) ⟺ c ∈ ⋃{X_i}
 func TestUnionMulti(t *testing.T) {
-	t.Error("TestUnionMulti is not implemented")
+	sets := allSets()
+
+	for _, set1 := range sets {
+		for _, set2 := range sets {
+			for _, set3 := range sets {
+				uset := union(set1, set2, set3)
+
+				for element, in := range uset {
+					if in && !set1[element] && !set2[element] && !set3[element] {
+						t.Error("'"+string(element)+"' in union but not the arguments")
+						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)			
+					}
+				}
+				for element, in := range set1 {
+					if in && !uset[element] {
+						t.Error("'"+string(element)+"' in first argument but not in union")
+						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)			
+					}
+				}
+				for element, in := range set2 {
+					if in && !uset[element] {
+						t.Error("'"+string(element)+"' in second argument but not in union")
+						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)			
+					}
+				}
+				for element, in := range set3 {
+					if in && !uset[element] {
+						t.Error("'"+string(element)+"' in third argument but not in union")
+						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)			
+					}
+				}
+			}
+		}
+	}
 }
 
 // testing valid function
