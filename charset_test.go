@@ -175,9 +175,64 @@ func TestUnionMulti(t *testing.T) {
 }
 
 // testing valid function
-// c ∈ valid(F) ⟺ charClass(c) ∈ F
+// c ∈ valid(charCombos) ⟺ charClass(c) ∈ charCombos
 func TestValid(t *testing.T) {
-	t.Error("TestValid is not implemented")
+	allCharCombos := allCharClasses()
+
+	for _, charCombos := range allCharCombos {
+		chars := valid(charCombos)
+		// c ∈ valid(charCombos) ⟹ charClass(c) ∈ charCombos
+		for c, in := range chars {
+			if in {
+				if !charCombos[charClass(c)] {
+					t.Error("'"+string(c)+"' in valid(", charCombos,") =", chars, "but '"+string(c)+"' not in", charCombos)
+				}
+			}
+		}
+		// charClass(c) ∈ charCombos ⟹ c ∈ valid(charCombos)
+		for class, in := range charCombos {
+			if in {
+				for c, in := range charsFrom[class] {
+					if in {
+						if !chars[c] {
+							t.Error("'"+string(c)+"' not in valid(", charCombos,") =", chars, "but '"+string(c)+"' in", charCombos)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+func allCharClasses() []map[string]bool {
+
+	charclasses := []map[string]bool{}
+
+	for i:=0; i < 16; i++ {
+		a := map[string]bool{
+			"alphabet": i >= 8,
+			"digit":    i % 8 >= 4,
+			"special":  i % 4 >= 2,
+			"space":    i % 2 == 1,
+		}
+		charclasses = append(charclasses, a)		
+	}
+
+	return charclasses
+}
+
+func charClass(c rune) string {
+	switch {
+	case alphabet[c]:
+		return "alphabet"
+	case digit[c]:
+		return "digit"
+	case special[c]:
+		return "special"
+	case space[c]:
+		return "space"
+	}
+	return ""
 }
 
 // testing getCharSubsets function
