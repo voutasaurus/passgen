@@ -59,10 +59,10 @@ var charsFrom = map[string]charset{
 }
 
 // getCharSubsets returns the charSubsets based on input
-// Cannot do spaces at this stage
+// NB: Calling function cannot do spaces at this stage
 func getCharSubsets(sample string) (map[string]bool, error) {
-	if len(sample) > 3 {
-		return map[string]bool{}, errors.New("Too many characters. You only need 3 at most.")
+	if len(sample) > 4 {
+		return map[string]bool{}, errors.New("Too many characters. You only need 4 at most.")
 	}
 	charSubsets := map[string]bool{}
 	for _, c := range []rune(sample) {
@@ -72,6 +72,8 @@ func getCharSubsets(sample string) (map[string]bool, error) {
 			charSubsets["digit"] = true
 		} else if special[c] {
 			charSubsets["special"] = true
+		} else if space[c] {
+			charSubsets["space"] = true
 		} else {
 			return map[string]bool{}, errors.New("Invalid character used: '" + string(c) + "'")
 		}

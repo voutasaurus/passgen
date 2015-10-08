@@ -238,5 +238,67 @@ func charClass(c rune) string {
 // testing getCharSubsets function
 // s ∈ getCharSubsets(str) ⟺ s ∩ str ≠ ∅
 func TestGetCharSubsets(t *testing.T) {
-	t.Error("TestGetCharSubsets is not implemented")
+	testStrings := allTestStrings()
+
+	for _, testString := range testStrings {
+		subsets, err := getCharSubsets(testString)
+		if err != nil {
+			t.Error("getCharSubsets("+testString+") produced error:", err)
+		}
+		// ∀subset ∈ subsets ∃character ∈ subset ∩ testString
+		for subset, in := range subsets {
+			if in {
+				found := false
+				for _, character := range []rune(testString) {
+					if charsFrom[subset][character] {
+						found = true
+					}
+				}
+				if !found {
+					t.Error("Couldn't find any characters from", testString, "in", subset, "\ngetCharSubsets("+testString+") =", subsets)
+				}
+			}
+		} 
+		// ∀character ∈ testString ∃subset ∈ subsets . character ∈ subset
+		for _, character := range []rune(testString) {
+			found := false
+			for subset, in := range subsets {
+				if in && charsFrom[subset][character] {
+					found = true
+				}
+			}
+			if !found {					
+				t.Error("Couldn't find any subsets from", subsets, "containing", character, "\ngetCharSubsets("+testString+") =", subsets)			
+			}
+		}
+	}
+
+}
+
+func allTestStrings() []string {
+	testStrings := []string{}
+	allCharacters := getList(union(alphabet, digit, special, space))
+	for _, char := range allCharacters {
+		testStrings = append(testStrings, string(char))
+	}
+	for _, char1 := range allCharacters {
+		for _, char2 := range allCharacters {
+			testStrings = append(testStrings, string(char1)+string(char2))
+		}
+	}
+	for _, char1 := range allCharacters {
+		for _, char2 := range allCharacters {
+			for _, char3 := range allCharacters {
+				testStrings = append(testStrings, string(char1)+string(char2)+string(char3))
+			}
+		}
+	}
+
+	testStrings = append(testStrings, "aaaa")
+	testStrings = append(testStrings, "1111")
+	testStrings = append(testStrings, "####")
+	testStrings = append(testStrings, "    ")
+	testStrings = append(testStrings, "a$1 ")
+
+	return testStrings
 }
