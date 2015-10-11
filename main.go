@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"io"
 )
 
 var defaultCharSubsets = map[string]bool{
@@ -13,52 +14,57 @@ var defaultCharSubsets = map[string]bool{
 		"space":    false,
 	}
 
-// main handles the length argument and calls the generate function
-// printing the results
 func main() {
+	randomPassword(os.Args, os.Stdout)
+}
+
+// randomPassword handles the length argument and calls the generate function
+// printing the results
+func randomPassword(args []string, out io.Writer) {
 	// This utility only takes 2 arguments (3 including the name of the program)
 	var charSubsets map[string]bool
 	switch {
-	case len(os.Args) == 0:
-		fmt.Println("How'd you do that? Heck, I'm not even mad; that's amazing.")
+	case len(args) == 0:
+		fmt.Fprintln(out, "Called with no executable name or other arguments. This function needs an executable name.")
 		return
-	case len(os.Args) == 1:
-		fmt.Println(os.Args[0], "must be called with at least one argument.")
-		fmt.Println("That is, a length for the password to be generated.")
+	case len(args) == 1:
+		fmt.Fprintln(out, args[0], "must be called with at least one argument.")
+		fmt.Fprintln(out, "That is, a length for the password to be generated.")
 		return
-	case len(os.Args) == 2:
+	case len(args) == 2:
 		charSubsets = defaultCharSubsets
-	case len(os.Args) == 3:
+	case len(args) == 3:
 		var subsetErr error
-		charSubsets, subsetErr = getCharSubsets(os.Args[2])
+		charSubsets, subsetErr = getCharSubsets(args[2])
 		if subsetErr != nil {
-			fmt.Println(os.Args[2], "is not a valid specification for a character set.")
-			fmt.Println("A specification contains a character from each set you wish to include.")
-			fmt.Println("For example: j!3")
-			fmt.Println(subsetErr)
+			fmt.Fprintln(out, args[2], "is not a valid specification for a character set.")
+			fmt.Fprintln(out, "A specification contains a character from each set you wish to include.")
+			fmt.Fprintln(out, "For example: j!3")
+			fmt.Fprintln(out, subsetErr)
 			return
 		}
-	case len(os.Args) > 3:
-		fmt.Println(os.Args[0], "must be called with at most two arguments.")
-		fmt.Println("That is, a length for the password to be generated, and a combination of characters representing the desired character sets")
+	case len(args) > 3:
+		fmt.Fprintln(out, args[0], "must be called with at most two arguments.")
+		fmt.Fprintln(out, "That is, a length for the password to be generated, and a combination of characters representing the desired character sets")
 		return
 	}
 
 	// Convert the given argument so it can be used as the length of the password to generate
-	length, lengthErr := strconv.Atoi(os.Args[1])
+	length, lengthErr := strconv.Atoi(args[1])
 	if lengthErr != nil || length < 0 {
-		fmt.Println(os.Args[1], "is not a valid password length.")
+		fmt.Fprintln(out, args[1], "is not a valid password length.")
 		return
 	}
 
 	// generate the password
 	password, err := generate(length, valid(charSubsets))
 	if err != nil {
-		fmt.Println("Could not generate a random password successfully.")
-		fmt.Println(err)
+		fmt.Fprintln(out, "Could not generate a random password successfully.")
+		fmt.Fprintln(out, err)
 		return
 	}
 
 	// Print the generated password
-	fmt.Println("Random password:", password, "-", len(password), "characters long")
+	fmt.Fprintln(out, "Random password:", password, "-", len(password), "characters long")
+	return
 }
