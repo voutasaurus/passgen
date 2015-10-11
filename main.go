@@ -18,6 +18,7 @@ func randomPasswordApp(out io.Writer) *cli.App {
 	app := cli.NewApp()
 	app.Name = "passgen"
 	app.Usage = "generate a random password"
+	app.Writer = out
 	app.Flags = []cli.Flag {
 		cli.StringFlag{
 		    Name: "chars, c",

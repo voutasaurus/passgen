@@ -81,9 +81,44 @@ func TestRandomPasswordNAN(t *testing.T) {
 	app := randomPasswordApp(testWriter)
 	app.Run([]string{"passgen", "-l", n})
 
-	if buf.String() == "  " {
-		t.Error("passgen -l", n, "printed '", buf.String(), "' expected Incorrect Usage message")
+	expected := `Incorrect Usage.
+
+NAME:
+   passgen - generate a random password
+
+USAGE:
+   /tmp/go-build496363236/github.com/voutasaurus/passgen/_test/passgen.test [global options] command [command options] [arguments...]
+
+VERSION:
+   0.0.0
+
+COMMANDS:
+   help, h	Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --chars, -c "a1*"	specify which character sets to include in the generated password
+   --length, -l "20"	specify the length of the generated password
+   --help, -h		show help
+   --version, -v	print the version
+
+`
+	expectWords := strings.Fields(expected)
+	actualWords := strings.Fields(buf.String())
+
+	if len(actualWords) != len(expectWords) {
+		t.Error("expected", len(expectWords), "words. got", len(actualWords), "words.")
+		t.Error("passgen -l", n, "printed '", buf.String(), "' expected", expected)
+		t.FailNow()
 	}
+
+	for i := range actualWords {
+		if i != 10 && actualWords[i] != expectWords[i] { // i == 10 contains the build number for the tests
+			t.Error("Output at word",i,"expected:",expectWords[i],"got:",actualWords[i])
+			t.Error("passgen -l", n, "printed '", buf.String(), "' expected", expected)
+		}
+	}
+
+
 }
 
 // RandomPasswordApp([]string{passgen, -1})
