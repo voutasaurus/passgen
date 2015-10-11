@@ -3,68 +3,63 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"io"
+	"github.com/codegangsta/cli"
 )
 
-var defaultCharSubsets = map[string]bool{
-		"alphabet": true,
-		"digit":    true,
-		"special":  true,
-		"space":    false,
-	}
-
 func main() {
-	randomPassword(os.Args, os.Stdout)
+	app := randomPasswordApp(os.Stdout)
+	app.Run(os.Args)
 }
 
-// randomPassword handles the length argument and calls the generate function
+// randomPasswordApp handles the length argument and calls the generate function
 // printing the results
-func randomPassword(args []string, out io.Writer) {
-	// This utility only takes 2 arguments (3 including the name of the program)
-	var charSubsets map[string]bool
-	switch {
-	case len(args) == 0:
-		fmt.Fprintln(out, "Called with no executable name or other arguments. This function needs an executable name.")
-		return
-	case len(args) == 1:
-		fmt.Fprintln(out, args[0], "must be called with at least one argument.")
-		fmt.Fprintln(out, "That is, a length for the password to be generated.")
-		return
-	case len(args) == 2:
-		charSubsets = defaultCharSubsets
-	case len(args) == 3:
-		var subsetErr error
-		charSubsets, subsetErr = getCharSubsets(args[2])
+func randomPasswordApp(out io.Writer) *cli.App {
+	app := cli.NewApp()
+	app.Name = "passgen"
+	app.Usage = "generate a random password"
+	app.Flags = []cli.Flag {
+		cli.StringFlag{
+		    Name: "chars, c",
+		    Value: "a1*",
+		    Usage: "specify which character sets to include in the generated password",
+		},
+		cli.IntFlag{
+		    Name: "length, l",
+		    Value: 20,
+		    Usage: "specify the length of the generated password",
+		},
+	}
+	app.Action = func(c *cli.Context) {
+		charSubsets, subsetErr := getCharSubsets(c.String("chars"))
 		if subsetErr != nil {
-			fmt.Fprintln(out, args[2], "is not a valid specification for a character set.")
-			fmt.Fprintln(out, "A specification contains a character from each set you wish to include.")
-			fmt.Fprintln(out, "For example: j!3")
+			fmt.Fprintln(out, "Could not generate a random password successfully.")
 			fmt.Fprintln(out, subsetErr)
 			return
 		}
-	case len(args) > 3:
-		fmt.Fprintln(out, args[0], "must be called with at most two arguments.")
-		fmt.Fprintln(out, "That is, a length for the password to be generated, and a combination of characters representing the desired character sets")
+
+		// Convert the given argument so it can be used as the length of the password to generate
+		length := c.Int("length")
+		if length < 0 {
+			fmt.Fprintln(out, "Could not generate a random password successfully.")
+			fmt.Fprintln(out, length, "is not a valid password length. Must be greater than zero.")
+			return
+		}
+
+		// generate the password
+		password, err := generate(length, valid(charSubsets))
+		if err != nil {
+			fmt.Fprintln(out, "Could not generate a random password successfully.")
+			fmt.Fprintln(out, err)
+			return
+		}
+
+		// Print the generated password
+		fmt.Fprintln(out, "Random password:", password, "-", len(password), "characters long")
 		return
 	}
 
-	// Convert the given argument so it can be used as the length of the password to generate
-	length, lengthErr := strconv.Atoi(args[1])
-	if lengthErr != nil || length < 0 {
-		fmt.Fprintln(out, args[1], "is not a valid password length.")
-		return
-	}
-
-	// generate the password
-	password, err := generate(length, valid(charSubsets))
-	if err != nil {
-		fmt.Fprintln(out, "Could not generate a random password successfully.")
-		fmt.Fprintln(out, err)
-		return
-	}
-
-	// Print the generated password
-	fmt.Fprintln(out, "Random password:", password, "-", len(password), "characters long")
-	return
+	return app
 }
+
+

@@ -6,6 +6,13 @@ import (
 	"errors"
 )
 
+var defaultCharSubsets = map[string]bool{
+		"alphabet": true,
+		"digit":    true,
+		"special":  true,
+		"space":    false,
+	}
+
 // testing generate function
 // len(generate(n, X)) = n
 func TestGenerateLength(t *testing.T) {
