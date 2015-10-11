@@ -1,21 +1,79 @@
 passgen
 =======
 
-Passgen is a simple random password generator.
+passgen is a simple random password generator.
 
 Usage
 =====
 
-Once compiled, you can run commands like the following examples:
+Once passgen is compiled and added to PATH, you can run commands like the following examples:
 
-passgen 20
-- This will generate a random string of length 20 from lowercase, uppercase, digits and symbols (no whitespace)
+passgen
+- By default passgen will generate a random string of length 20 from lowercase, uppercase, digits and symbols (no whitespace)
 
-passgen 15 a1
+passgen -l 10
+- This will generate a random string of length 10 from lowercase, uppercase, digits and symbols (no whitespace)
+
+passgen -l 15 -c a1
 - This will generate a random string of length 15 from lowercase, uppercase and digits. The a1 can be any combination of letter and digit.
 
-passgen 30 a%
+passgen -l 30 -c a%
 - This will generate a random string of length 30 from lowercase, uppercase and symbols. Again the a% could have just as easily been r*.
 
-passgen 1 a
+passgen -l 1 -c a
 - This will generate a random string of length 1 from lowercase and uppercase.
+
+passgen -h
+- This will print the following:
+
+> NAME:
+   
+>  passgen - generate a random password
+
+> USAGE:
+   
+>  passgen [global options] command [command options] [arguments...]
+   
+> VERSION:
+   
+>   0.0.0
+   
+> COMMANDS:
+   
+>   help, h	Shows a list of commands or help for one command
+   
+> GLOBAL OPTIONS:
+
+>   --chars, -c "a1*"	specify which character sets to include in the generated password
+ 
+>   --length, -l "20"	specify the length of the generated password
+
+>   --help, -h		show help
+
+>   --version, -v	print the version
+
+
+Build instructions
+==================
+
+First install and set up Go:
+Install the latest version of Go (https://golang.org/dl/)
+
+Set $GOPATH and create three directories in $GOPATH called bin, src and pkg.
+
+Install the app (method 1):
+Add $GOPATH/bin to $PATH
+
+Run the following commands:
+- go get github.com/voutasaurus/passgen
+- cd $GOPATH/src/github.com/voutasaurus/passgen
+- go install
+
+Install the app (alternative method):
+
+Run the following commands:
+- go get github.com/voutasaurus/passgen
+- cd $GOPATH/src/github.com/voutasaurus/passgen
+- go build
+
+Copy the resultant executable (passgen) to a path already in $PATH.
