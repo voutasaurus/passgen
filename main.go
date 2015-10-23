@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"io"
 	"github.com/codegangsta/cli"
+	"io"
+	"os"
 )
 
 func main() {
@@ -19,16 +19,16 @@ func randomPasswordApp(out io.Writer) *cli.App {
 	app.Name = "passgen"
 	app.Usage = "generate a random password"
 	app.Writer = out
-	app.Flags = []cli.Flag {
+	app.Flags = []cli.Flag{
 		cli.StringFlag{
-		    Name: "chars, c",
-		    Value: "a1*",
-		    Usage: "specify which character sets to include in the generated password",
+			Name:  "chars, c",
+			Value: "a1*",
+			Usage: "specify which character sets to include in the generated password",
 		},
 		cli.IntFlag{
-		    Name: "length, l",
-		    Value: 20,
-		    Usage: "specify the length of the generated password",
+			Name:  "length, l",
+			Value: 20,
+			Usage: "specify the length of the generated password",
 		},
 	}
 	app.Action = func(c *cli.Context) {
@@ -62,5 +62,3 @@ func randomPasswordApp(out io.Writer) *cli.App {
 
 	return app
 }
-
-

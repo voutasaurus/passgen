@@ -4,10 +4,15 @@ import (
 	"fmt"
 )
 
-type wordset map[string]float64
+type frequency struct {
+	Seen  int
+	OutOf int
+}
+
+type wordset map[string]frequency
 
 var englishFrequency = wordset{
-	"this": 1.0,
+	"this": frequency{1, 1},
 }
 
 func trivial() {

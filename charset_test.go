@@ -3,9 +3,9 @@ package main
 // charset_test.go
 
 import (
-	"testing"
-	"strings"
 	"errors"
+	"strings"
+	"testing"
 )
 
 // Extra example sets to test edge cases
@@ -38,7 +38,6 @@ func allSetsNonEmpty() []charset {
 	return combinations(alphabet, digit, special, space)[1:]
 }
 
-
 // testing getList function
 // c ∈ getList(X) ⟺ c ∈ X
 func TestGetList(t *testing.T) {
@@ -53,7 +52,7 @@ func TestGetList(t *testing.T) {
 				t.Error(x, "found in", list, "but not in", set)
 			}
 		}
-		// c ∈ X ⟹ c ∈ getList(X) 
+		// c ∈ X ⟹ c ∈ getList(X)
 		for x, in := range set {
 			if in {
 				var err error
@@ -76,13 +75,13 @@ func remove(list []rune, c rune) ([]rune, error) {
 	before := len(list)
 	list = []rune(strings.Replace(string(list), string(c), "", 1))
 	after := len(list)
-	if before != after + 1 {
-		return list, errors.New("Removing '"+string(c)+"'did not shrink list")
+	if before != after+1 {
+		return list, errors.New("Removing '" + string(c) + "'did not shrink list")
 	}
 	return list, nil
 }
 
-// testing union function 
+// testing union function
 // union() = ∅
 func TestUnionNone(t *testing.T) {
 	testEmpty := union()
@@ -100,7 +99,7 @@ func TestUnionOne(t *testing.T) {
 		testSingle := union(set)
 		if len(testSingle) != len(set) {
 			t.Error("union(X) should be X, instead union(", set, ") is", testSingle)
-		}	
+		}
 	}
 }
 
@@ -115,20 +114,20 @@ func TestUnionTwo(t *testing.T) {
 
 			for element, in := range uset {
 				if in && !set1[element] && !set2[element] {
-					t.Error("'"+string(element)+"' in union but not either of the arguments")
-					t.Log("X:", set1, "Y:", set2, "union(X,Y):", uset)			
+					t.Error("'" + string(element) + "' in union but not either of the arguments")
+					t.Log("X:", set1, "Y:", set2, "union(X,Y):", uset)
 				}
 			}
 			for element, in := range set1 {
 				if in && !uset[element] {
-					t.Error("'"+string(element)+"' in first argument but not in union")
-					t.Log("X:", set1, "Y:", set2, "union(X,Y):", uset)			
+					t.Error("'" + string(element) + "' in first argument but not in union")
+					t.Log("X:", set1, "Y:", set2, "union(X,Y):", uset)
 				}
 			}
 			for element, in := range set2 {
 				if in && !uset[element] {
-					t.Error("'"+string(element)+"' in second argument but not in union")
-					t.Log("X:", set1, "Y:", set2, "union(X,Y):", uset)			
+					t.Error("'" + string(element) + "' in second argument but not in union")
+					t.Log("X:", set1, "Y:", set2, "union(X,Y):", uset)
 				}
 			}
 		}
@@ -147,26 +146,26 @@ func TestUnionMulti(t *testing.T) {
 
 				for element, in := range uset {
 					if in && !set1[element] && !set2[element] && !set3[element] {
-						t.Error("'"+string(element)+"' in union but not the arguments")
-						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)			
+						t.Error("'" + string(element) + "' in union but not the arguments")
+						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)
 					}
 				}
 				for element, in := range set1 {
 					if in && !uset[element] {
-						t.Error("'"+string(element)+"' in first argument but not in union")
-						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)			
+						t.Error("'" + string(element) + "' in first argument but not in union")
+						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)
 					}
 				}
 				for element, in := range set2 {
 					if in && !uset[element] {
-						t.Error("'"+string(element)+"' in second argument but not in union")
-						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)			
+						t.Error("'" + string(element) + "' in second argument but not in union")
+						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)
 					}
 				}
 				for element, in := range set3 {
 					if in && !uset[element] {
-						t.Error("'"+string(element)+"' in third argument but not in union")
-						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)			
+						t.Error("'" + string(element) + "' in third argument but not in union")
+						t.Log("X:", set1, "Y:", set2, "Z:", set3, "union(X,Y,Z):", uset)
 					}
 				}
 			}
@@ -185,7 +184,7 @@ func TestValid(t *testing.T) {
 		for c, in := range chars {
 			if in {
 				if !charCombos[charClass(c)] {
-					t.Error("'"+string(c)+"' in valid(", charCombos,") =", chars, "but '"+string(c)+"' not in", charCombos)
+					t.Error("'"+string(c)+"' in valid(", charCombos, ") =", chars, "but '"+string(c)+"' not in", charCombos)
 				}
 			}
 		}
@@ -195,7 +194,7 @@ func TestValid(t *testing.T) {
 				for c, in := range charsFrom[class] {
 					if in {
 						if !chars[c] {
-							t.Error("'"+string(c)+"' not in valid(", charCombos,") =", chars, "but '"+string(c)+"' in", charCombos)
+							t.Error("'"+string(c)+"' not in valid(", charCombos, ") =", chars, "but '"+string(c)+"' in", charCombos)
 						}
 					}
 				}
@@ -208,14 +207,14 @@ func allCharClasses() []map[string]bool {
 
 	charclasses := []map[string]bool{}
 
-	for i:=0; i < 16; i++ {
+	for i := 0; i < 16; i++ {
 		a := map[string]bool{
 			"alphabet": i >= 8,
-			"digit":    i % 8 >= 4,
-			"special":  i % 4 >= 2,
-			"space":    i % 2 == 1,
+			"digit":    i%8 >= 4,
+			"special":  i%4 >= 2,
+			"space":    i%2 == 1,
 		}
-		charclasses = append(charclasses, a)		
+		charclasses = append(charclasses, a)
 	}
 
 	return charclasses
@@ -258,7 +257,7 @@ func TestGetCharSubsets(t *testing.T) {
 					t.Error("Couldn't find any characters from", testString, "in", subset, "\ngetCharSubsets("+testString+") =", subsets)
 				}
 			}
-		} 
+		}
 		// ∀character ∈ testString ∃subset ∈ subsets . character ∈ subset
 		for _, character := range []rune(testString) {
 			found := false
@@ -267,8 +266,8 @@ func TestGetCharSubsets(t *testing.T) {
 					found = true
 				}
 			}
-			if !found {					
-				t.Error("Couldn't find any subsets from", subsets, "containing", character, "\ngetCharSubsets("+testString+") =", subsets)			
+			if !found {
+				t.Error("Couldn't find any subsets from", subsets, "containing", character, "\ngetCharSubsets("+testString+") =", subsets)
 			}
 		}
 	}

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 )
 
 type charset map[rune]bool
@@ -129,7 +129,7 @@ func (set charset) String() string {
 		}
 	}
 	if !empty {
-		display = display[:len(display)-2]		
+		display = display[:len(display)-2]
 	}
 	display += "}"
 	return display

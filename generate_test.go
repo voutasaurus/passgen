@@ -1,17 +1,17 @@
 package main
 
 import (
-	"testing"
-	"strings"
 	"errors"
+	"strings"
+	"testing"
 )
 
 var defaultCharSubsets = map[string]bool{
-		"alphabet": true,
-		"digit":    true,
-		"special":  true,
-		"space":    false,
-	}
+	"alphabet": true,
+	"digit":    true,
+	"special":  true,
+	"space":    false,
+}
 
 // testing generate function
 // len(generate(n, X)) = n
@@ -126,7 +126,7 @@ func TestMaxOfOne(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		m := max(i)
 		if m != i {
-			t.Error("max("+string(i)+") should be", i, ". Instead it is", m)			
+			t.Error("max("+string(i)+") should be", i, ". Instead it is", m)
 		}
 	}
 }
@@ -135,12 +135,12 @@ func TestMaxOfOne(t *testing.T) {
 func TestMaxOfTwo(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		for j := 0; j < 10; j++ {
-			m := max(i,j)
+			m := max(i, j)
 			if i >= j && m != i {
-				t.Error("max("+string(i)+", "+string(j)+") should be", i, ". Instead it is", m)			
+				t.Error("max("+string(i)+", "+string(j)+") should be", i, ". Instead it is", m)
 			}
 			if j >= i && m != j {
-				t.Error("max("+string(i)+", "+string(j)+") should be", j, ". Instead it is", m)			
+				t.Error("max("+string(i)+", "+string(j)+") should be", j, ". Instead it is", m)
 			}
 		}
 	}
@@ -148,16 +148,28 @@ func TestMaxOfTwo(t *testing.T) {
 
 // max(xs...) = x_i ⟺ ∀j . x_i > x_j
 func TestMaxOfN(t *testing.T) {
-	if 2 != max(0,1,2) { t.Error("max(0,1,2) should be 2. Instead is", max(0,1,2)) }
-	if 2 != max(0,2,1) { t.Error("max(0,2,1) should be 2. Instead is", max(0,2,1)) }
-	if 2 != max(1,0,2) { t.Error("max(1,0,2) should be 2. Instead is", max(1,0,2)) }
-	if 2 != max(1,2,0) { t.Error("max(1,2,0) should be 2. Instead is", max(1,2,0)) }
-	if 2 != max(2,0,1) { t.Error("max(2,0,1) should be 2. Instead is", max(2,0,1)) }
-	if 2 != max(2,1,0) { t.Error("max(2,1,0) should be 2. Instead is", max(2,1,0)) }
+	if 2 != max(0, 1, 2) {
+		t.Error("max(0,1,2) should be 2. Instead is", max(0, 1, 2))
+	}
+	if 2 != max(0, 2, 1) {
+		t.Error("max(0,2,1) should be 2. Instead is", max(0, 2, 1))
+	}
+	if 2 != max(1, 0, 2) {
+		t.Error("max(1,0,2) should be 2. Instead is", max(1, 0, 2))
+	}
+	if 2 != max(1, 2, 0) {
+		t.Error("max(1,2,0) should be 2. Instead is", max(1, 2, 0))
+	}
+	if 2 != max(2, 0, 1) {
+		t.Error("max(2,0,1) should be 2. Instead is", max(2, 0, 1))
+	}
+	if 2 != max(2, 1, 0) {
+		t.Error("max(2,1,0) should be 2. Instead is", max(2, 1, 0))
+	}
 }
 
 // testing tooMany function
-// ∀i . errs[i].String() substring of tooMany(errs...) 
+// ∀i . errs[i].String() substring of tooMany(errs...)
 func TestTooManySubstring(t *testing.T) {
 	errs := []error{}
 	for i := 0; i < 10; i++ {
@@ -177,7 +189,9 @@ func TestTooManyLineCount(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		errs = append(errs, errors.New(string(i)))
 		lineCount := strings.Count(tooMany(errs).Error(), "\n")
-		lineMismatch := len(errs) + 1 != lineCount
-		if lineMismatch { t.Error("len(errs):", len(errs), "lines:", lineCount, "") }
+		lineMismatch := len(errs)+1 != lineCount
+		if lineMismatch {
+			t.Error("len(errs):", len(errs), "lines:", lineCount, "")
+		}
 	}
 }
