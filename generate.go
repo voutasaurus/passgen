@@ -35,7 +35,7 @@ func randElem(set charset) (rune, error) {
 	list := getList(set)
 
 	if len(list) == 0 {
-		return ' ', errors.New("randElem: Character set empty. Check character set generation.")
+		return ' ', errors.New("randElem: Character set empty. Check character set generation")
 	}
 
 	// Set the maximum index to choose - casting to big int for crypto/rand
