@@ -46,11 +46,6 @@ func TestGenerateContents(t *testing.T) {
 	}
 }
 
-// generate(n, X) has no discernable pattern between subsequent calls
-func TestGenerateRandomness(t *testing.T) {
-	t.Error("TestGenerateRandomness is not implemented")
-}
-
 // testing randElem function
 // randElem(∅) = ' ', CharsetEmptyError
 func TestRandElemEmptySet(t *testing.T) {
@@ -105,11 +100,6 @@ func TestRandElemMembership(t *testing.T) {
 			t.Error("Generated '"+string(char)+"' but this is not in space:", space)
 		}
 	}
-}
-
-// randElem(X) has no discernable pattern between subsequent calls
-func TestRandElemRandomness(t *testing.T) {
-	t.Error("TestRandElemRandomness is not implemented")
 }
 
 // testing max function
