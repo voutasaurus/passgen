@@ -14,7 +14,7 @@ var negset = charset{'a': false}
 
 // helper functions
 
-// returns the something
+// Combinations returns a list of the charsets that are combinations of the charsets passed as arguments
 func combinations(sets ...charset) []charset {
 	combos := []charset{emptyset}
 
