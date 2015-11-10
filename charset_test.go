@@ -4,13 +4,12 @@ package main
 
 import (
 	"errors"
-	"strings"
 	"testing"
 )
 
 // Extra example sets to test edge cases
 var emptyset = charset{}
-var negset = charset{'a': false}
+var negset = charset{"a": false}
 
 // helper functions
 
@@ -71,14 +70,17 @@ func TestGetList(t *testing.T) {
 }
 
 // remove removes a sinlge element matching c from the list
-func remove(list []rune, c rune) ([]rune, error) {
-	before := len(list)
-	list = []rune(strings.Replace(string(list), string(c), "", 1))
-	after := len(list)
-	if before != after+1 {
-		return list, errors.New("Removing '" + string(c) + "'did not shrink list")
+func remove(list []string, s string) ([]string, error) {
+	for i, x := range list {
+		if x == s {
+			if i+1 == len(list) {
+				return list[:len(list)-1], nil
+			} else {
+				return append(list[:i], list[i+1:]...), nil
+			}
+		}
 	}
-	return list, nil
+	return list, errors.New("Removing '" + s + "'did not shrink list")
 }
 
 // testing union function
@@ -220,7 +222,7 @@ func allCharClasses() []map[string]bool {
 	return charclasses
 }
 
-func charClass(c rune) string {
+func charClass(c string) string {
 	switch {
 	case alphabet[c]:
 		return "alphabet"
@@ -249,7 +251,7 @@ func TestGetCharSubsets(t *testing.T) {
 			if in {
 				found := false
 				for _, character := range []rune(testString) {
-					if charsFrom[subset][character] {
+					if charsFrom[subset][string(character)] {
 						found = true
 					}
 				}
@@ -262,7 +264,7 @@ func TestGetCharSubsets(t *testing.T) {
 		for _, character := range []rune(testString) {
 			found := false
 			for subset, in := range subsets {
-				if in && charsFrom[subset][character] {
+				if in && charsFrom[subset][string(character)] {
 					found = true
 				}
 			}

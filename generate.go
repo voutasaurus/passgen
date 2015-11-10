@@ -22,20 +22,20 @@ func generate(length int, valid charset) (string, error) {
 				return "", tooMany(errs)
 			}
 		} else {
-			// If there is no error, add the rune to the return string
-			pass += fmt.Sprintf("%c", char)
+			// If there is no error, add the string to the return string
+			pass += char
 		}
 	}
 	return pass, nil
 }
 
-// randElem gets a random rune from a charset
-func randElem(set charset) (rune, error) {
+// randElem gets a random string from a charset
+func randElem(set charset) (string, error) {
 	// Create a list to choose a random index from
 	list := getList(set)
 
 	if len(list) == 0 {
-		return ' ', errors.New("randElem: Character set empty. Check character set generation")
+		return "", errors.New("randElem: Character set empty. Check character set generation")
 	}
 
 	// Set the maximum index to choose - casting to big int for crypto/rand
@@ -47,10 +47,10 @@ func randElem(set charset) (rune, error) {
 
 	// Error reading from os random source
 	if err != nil {
-		return ' ', err
+		return "", err
 	}
 
-	// No error, return rune at random index - casting back to int
+	// No error, return string at random index - casting back to int
 	return list[int(i.Int64())], nil
 }
 

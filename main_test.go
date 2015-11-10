@@ -65,7 +65,7 @@ func TestRandomPasswordOneArg(t *testing.T) {
 	// Check char set membership
 	all := union(alphabet, digit, special)
 	for _, x := range []rune(pass) {
-		if !all[x] {
+		if !all[string(x)] {
 			t.Error("pass =", pass, "contains", string(x), "but this is not in", all)
 		}
 	}
@@ -193,7 +193,7 @@ func TestRandomPasswordSetMembership(t *testing.T) {
 		pass := buf.String()[len(premessage) : len(premessage)+n]
 
 		for _, x := range []rune(pass) {
-			if !all[x] {
+			if !all[string(x)] {
 				t.Error("pass =", pass, "contains", string(x), "but this is not in", all)
 			}
 		}

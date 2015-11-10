@@ -37,7 +37,7 @@ func TestGenerateContents(t *testing.T) {
 				t.Error("Error generating.", err)
 			} else {
 				for _, c := range s {
-					if !set[c] {
+					if !set[string(c)] {
 						t.Error(c, "generated as part of", s, "only expected elements from", set)
 					}
 				}
@@ -58,7 +58,7 @@ func TestRandElemEmptySet(t *testing.T) {
 
 // randElem(X) ∈ X
 func TestRandElemMembership(t *testing.T) {
-	var char rune
+	var char string
 	var err error
 
 	// alphabet
@@ -67,7 +67,7 @@ func TestRandElemMembership(t *testing.T) {
 		if err != nil {
 			t.Error("Generating random alphabetic character failed", err.Error())
 		} else if !alphabet[char] {
-			t.Error("Generated '"+string(char)+"' but this is not in alphabet:", alphabet)
+			t.Error("Generated '"+char+"' but this is not in alphabet:", alphabet)
 		}
 	}
 
@@ -77,7 +77,7 @@ func TestRandElemMembership(t *testing.T) {
 		if err != nil {
 			t.Error("Generating random digit failed", err.Error())
 		} else if !digit[char] {
-			t.Error("Generated '"+string(char)+"' but this is not in digit:", digit)
+			t.Error("Generated '"+char+"' but this is not in digit:", digit)
 		}
 	}
 
@@ -87,7 +87,7 @@ func TestRandElemMembership(t *testing.T) {
 		if err != nil {
 			t.Error("Generating random special character failed", err.Error())
 		} else if !special[char] {
-			t.Error("Generated '"+string(char)+"' but this is not in special:", special)
+			t.Error("Generated '"+char+"' but this is not in special:", special)
 		}
 	}
 
@@ -97,7 +97,7 @@ func TestRandElemMembership(t *testing.T) {
 		if err != nil {
 			t.Error("Generating random space character failed", err.Error())
 		} else if !space[char] {
-			t.Error("Generated '"+string(char)+"' but this is not in space:", space)
+			t.Error("Generated '"+char+"' but this is not in space:", space)
 		}
 	}
 }
