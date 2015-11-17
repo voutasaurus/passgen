@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/codegangsta/cli"
 	"io"
 	"os"
+
+	"github.com/codegangsta/cli"
 )
 
 func main() {
@@ -30,6 +31,10 @@ func randomPasswordApp(out io.Writer) *cli.App {
 			Value: 20,
 			Usage: "specify the length of the generated password",
 		},
+		cli.BoolFlag{
+			Name:  "words, w",
+			Usage: "use words instead",
+		},
 	}
 	app.Action = func(c *cli.Context) {
 		charSubsets, subsetErr := getCharSubsets(c.String("chars"))
@@ -48,7 +53,13 @@ func randomPasswordApp(out io.Writer) *cli.App {
 		}
 
 		// generate the password
-		password, err := generate(length, valid(charSubsets))
+		var use charset
+		if c.Bool("words") {
+			use = english
+		} else {
+			use = valid(charSubsets)
+		}
+		password, err := generate(length, use)
 		if err != nil {
 			fmt.Fprintln(out, "Could not generate a random password successfully.")
 			fmt.Fprintln(out, err)

@@ -48,11 +48,16 @@ var space = charset{
 	" ": true,
 }
 
+var english = charset{
+	"this": true,
+}
+
 var charsFrom = map[string]charset{
 	"alphabet": alphabet,
 	"digit":    digit,
 	"special":  special,
 	"space":    space,
+	"english":  english,
 }
 
 // getCharSubsets returns the charSubsets based on input
