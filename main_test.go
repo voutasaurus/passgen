@@ -98,6 +98,7 @@ COMMANDS:
 GLOBAL OPTIONS:
    --chars, -c "a1*"	specify which character sets to include in the generated password
    --length, -l "20"	specify the length of the generated password
+   --words, -w          use words instead
    --help, -h		show help
    --version, -v	print the version
 
