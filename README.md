@@ -1,4 +1,4 @@
-passgen
+passgen [![Build Status](https://travis-ci.org/voutasaurus/passgen.svg?branch=master)](https://travis-ci.org/voutasaurus/passgen)
 =======
 
 passgen is a simple random password generator.
