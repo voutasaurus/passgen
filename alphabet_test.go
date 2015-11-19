@@ -1,6 +1,6 @@
 package main
 
-// charset_test.go
+// alphabet_test.go
 
 import (
 	"errors"
@@ -8,14 +8,14 @@ import (
 )
 
 // Extra example sets to test edge cases
-var emptyset = charset{}
-var negset = charset{"a": false}
+var emptyset = alphabet{}
+var negset = alphabet{"a": false}
 
 // helper functions
 
-// Combinations returns a list of the charsets that are combinations of the charsets passed as arguments
-func combinations(sets ...charset) []charset {
-	combos := []charset{emptyset}
+// Combinations returns a list of the alphabets that are combinations of the alphabets passed as arguments
+func combinations(sets ...alphabet) []alphabet {
+	combos := []alphabet{emptyset}
 
 	// Builds up by doubling {∅} → {∅, X} -> {∅, X, Y, X∪Y} → ...
 	for _, set := range sets {
@@ -29,12 +29,12 @@ func combinations(sets ...charset) []charset {
 	return combos
 }
 
-func allSets() []charset {
-	return combinations(alphabet, digit, special, space, negset)
+func allSets() []alphabet {
+	return combinations(alphabetic, digit, special, space, negset)
 }
 
-func allSetsNonEmpty() []charset {
-	return combinations(alphabet, digit, special, space)[1:]
+func allSetsNonEmpty() []alphabet {
+	return combinations(alphabetic, digit, special, space)[1:]
 }
 
 // testing getList function
@@ -176,27 +176,27 @@ func TestUnionMulti(t *testing.T) {
 }
 
 // testing valid function
-// c ∈ valid(charCombos) ⟺ charClass(c) ∈ charCombos
+// c ∈ valid(symbolCombos) ⟺ symbolClass(c) ∈ symbolCombos
 func TestValid(t *testing.T) {
-	allCharCombos := allCharClasses()
+	allSymbolCombos := allSymbolClasses()
 
-	for _, charCombos := range allCharCombos {
-		chars := valid(charCombos)
-		// c ∈ valid(charCombos) ⟹ charClass(c) ∈ charCombos
-		for c, in := range chars {
+	for _, symbolCombos := range allSymbolCombos {
+		symbols := valid(symbolCombos)
+		// c ∈ valid(symbolCombos) ⟹ symbolClass(c) ∈ symbolCombos
+		for c, in := range symbols {
 			if in {
-				if !charCombos[charClass(c)] {
-					t.Error("'"+string(c)+"' in valid(", charCombos, ") =", chars, "but '"+string(c)+"' not in", charCombos)
+				if !symbolCombos[symbolClass(c)] {
+					t.Error("'"+string(c)+"' in valid(", symbolCombos, ") =", symbols, "but '"+string(c)+"' not in", symbolCombos)
 				}
 			}
 		}
-		// charClass(c) ∈ charCombos ⟹ c ∈ valid(charCombos)
-		for class, in := range charCombos {
+		// symbolClass(c) ∈ symbolCombos ⟹ c ∈ valid(symbolCombos)
+		for class, in := range symbolCombos {
 			if in {
-				for c, in := range charsFrom[class] {
+				for c, in := range symbolsFrom[class] {
 					if in {
-						if !chars[c] {
-							t.Error("'"+string(c)+"' not in valid(", charCombos, ") =", chars, "but '"+string(c)+"' in", charCombos)
+						if !symbols[c] {
+							t.Error("'"+string(c)+"' not in valid(", symbolCombos, ") =", symbols, "but '"+string(c)+"' in", symbolCombos)
 						}
 					}
 				}
@@ -205,27 +205,27 @@ func TestValid(t *testing.T) {
 	}
 }
 
-func allCharClasses() []map[string]bool {
+func allSymbolClasses() []map[string]bool {
 
-	charclasses := []map[string]bool{}
+	symbolclasses := []map[string]bool{}
 
 	for i := 0; i < 16; i++ {
 		a := map[string]bool{
-			"alphabet": i >= 8,
-			"digit":    i%8 >= 4,
-			"special":  i%4 >= 2,
-			"space":    i%2 == 1,
+			"alphabetic": i >= 8,
+			"digit":      i%8 >= 4,
+			"special":    i%4 >= 2,
+			"space":      i%2 == 1,
 		}
-		charclasses = append(charclasses, a)
+		symbolclasses = append(symbolclasses, a)
 	}
 
-	return charclasses
+	return symbolclasses
 }
 
-func charClass(c string) string {
+func symbolClass(c string) string {
 	switch {
-	case alphabet[c]:
-		return "alphabet"
+	case alphabetic[c]:
+		return "alphabetic"
 	case digit[c]:
 		return "digit"
 	case special[c]:
@@ -236,40 +236,40 @@ func charClass(c string) string {
 	return ""
 }
 
-// testing getCharSubsets function
-// s ∈ getCharSubsets(str) ⟺ s ∩ str ≠ ∅
-func TestGetCharSubsets(t *testing.T) {
+// testing getSymbolSubsets function
+// s ∈ getSymbolSubsets(str) ⟺ s ∩ str ≠ ∅
+func TestGetSymbolSubsets(t *testing.T) {
 	testStrings := allTestStrings()
 
 	for _, testString := range testStrings {
-		subsets, err := getCharSubsets(testString)
+		subsets, err := getSymbolSubsets(testString)
 		if err != nil {
-			t.Error("getCharSubsets("+testString+") produced error:", err)
+			t.Error("getSymbolSubsets("+testString+") produced error:", err)
 		}
-		// ∀subset ∈ subsets ∃character ∈ subset ∩ testString
+		// ∀subset ∈ subsets ∃symbol ∈ subset ∩ testString
 		for subset, in := range subsets {
 			if in {
 				found := false
-				for _, character := range []rune(testString) {
-					if charsFrom[subset][string(character)] {
+				for _, symbol := range []rune(testString) {
+					if symbolsFrom[subset][string(symbol)] {
 						found = true
 					}
 				}
 				if !found {
-					t.Error("Couldn't find any characters from", testString, "in", subset, "\ngetCharSubsets("+testString+") =", subsets)
+					t.Error("Couldn't find any symbols from", testString, "in", subset, "\ngetSymbolSubsets("+testString+") =", subsets)
 				}
 			}
 		}
-		// ∀character ∈ testString ∃subset ∈ subsets . character ∈ subset
-		for _, character := range []rune(testString) {
+		// ∀symbol ∈ testString ∃subset ∈ subsets . symbol ∈ subset
+		for _, symbol := range []rune(testString) {
 			found := false
 			for subset, in := range subsets {
-				if in && charsFrom[subset][string(character)] {
+				if in && symbolsFrom[subset][string(symbol)] {
 					found = true
 				}
 			}
 			if !found {
-				t.Error("Couldn't find any subsets from", subsets, "containing", character, "\ngetCharSubsets("+testString+") =", subsets)
+				t.Error("Couldn't find any subsets from", subsets, "containing", symbol, "\ngetSymbolSubsets("+testString+") =", subsets)
 			}
 		}
 	}
@@ -278,19 +278,19 @@ func TestGetCharSubsets(t *testing.T) {
 
 func allTestStrings() []string {
 	testStrings := []string{}
-	allCharacters := getList(union(alphabet, digit, special, space))
-	for _, char := range allCharacters {
-		testStrings = append(testStrings, string(char))
+	allSymbols := getList(union(alphabetic, digit, special, space))
+	for _, symbol := range allSymbols {
+		testStrings = append(testStrings, string(symbol))
 	}
-	for _, char1 := range allCharacters {
-		for _, char2 := range allCharacters {
-			testStrings = append(testStrings, string(char1)+string(char2))
+	for _, symbol1 := range allSymbols {
+		for _, symbol2 := range allSymbols {
+			testStrings = append(testStrings, string(symbol1)+string(symbol2))
 		}
 	}
-	for _, char1 := range allCharacters {
-		for _, char2 := range allCharacters {
-			for _, char3 := range allCharacters {
-				testStrings = append(testStrings, string(char1)+string(char2)+string(char3))
+	for _, symbol1 := range allSymbols {
+		for _, symbol2 := range allSymbols {
+			for _, symbol3 := range allSymbols {
+				testStrings = append(testStrings, string(symbol1)+string(symbol2)+string(symbol3))
 			}
 		}
 	}

@@ -7,13 +7,13 @@ import (
 	"math/big"
 )
 
-// generate creates a random sequence of valid characters of a certain length
-func generate(length int, valid charset) (string, error) {
+// generate creates a random sequence of valid symbols of a certain length
+func generate(length int, valid alphabet) (string, error) {
 	pass := ""
 	errs := []error{}
 	for i := 0; i < length; i++ {
 		// Attempt to get a random element
-		char, err := randElem(valid)
+		symbol, err := randElem(valid)
 		if err != nil {
 			// Record error
 			errs = append(errs, err)
@@ -23,19 +23,19 @@ func generate(length int, valid charset) (string, error) {
 			}
 		} else {
 			// If there is no error, add the string to the return string
-			pass += char
+			pass += symbol
 		}
 	}
 	return pass, nil
 }
 
-// randElem gets a random string from a charset
-func randElem(set charset) (string, error) {
+// randElem gets a random string from a alphabet
+func randElem(set alphabet) (string, error) {
 	// Create a list to choose a random index from
 	list := getList(set)
 
 	if len(list) == 0 {
-		return "", errors.New("randElem: Character set empty. Check character set generation")
+		return "", errors.New("randElem: alphabet empty. Check alphabet generation")
 	}
 
 	// Set the maximum index to choose - casting to big int for crypto/rand

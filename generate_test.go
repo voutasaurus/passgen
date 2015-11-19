@@ -6,18 +6,18 @@ import (
 	"testing"
 )
 
-var defaultCharSubsets = map[string]bool{
-	"alphabet": true,
-	"digit":    true,
-	"special":  true,
-	"space":    false,
+var defaultsymbolSubsets = map[string]bool{
+	"alphabetic": true,
+	"digit":      true,
+	"special":    true,
+	"space":      false,
 }
 
 // testing generate function
 // len(generate(n, X)) = n
 func TestGenerateLength(t *testing.T) {
 	for i := 0; i < 100; i++ {
-		s, err := generate(i, valid(defaultCharSubsets))
+		s, err := generate(i, valid(defaultsymbolSubsets))
 		if err != nil {
 			t.Error("Error generating at length", i, err)
 		} else if len(s) != i {
@@ -47,57 +47,57 @@ func TestGenerateContents(t *testing.T) {
 }
 
 // testing randElem function
-// randElem(∅) = ' ', CharsetEmptyError
+// randElem(∅) = ' ', alphabetEmptyError
 func TestRandElemEmptySet(t *testing.T) {
-	emptyCharset := charset{}
-	_, err := randElem(emptyCharset)
+	emptyalphabet := alphabet{}
+	_, err := randElem(emptyalphabet)
 	if err == nil {
-		t.Error("Expected emptyCharset error, but error was nil")
+		t.Error("Expected emptyalphabet error, but error was nil")
 	}
 }
 
 // randElem(X) ∈ X
 func TestRandElemMembership(t *testing.T) {
-	var char string
+	var symbol string
 	var err error
 
-	// alphabet
+	// alphabetic
 	for i := 0; i < 1000; i++ {
-		char, err = randElem(alphabet)
+		symbol, err = randElem(alphabetic)
 		if err != nil {
-			t.Error("Generating random alphabetic character failed", err.Error())
-		} else if !alphabet[char] {
-			t.Error("Generated '"+char+"' but this is not in alphabet:", alphabet)
+			t.Error("Generating random alphabeticic symbol failed", err.Error())
+		} else if !alphabetic[symbol] {
+			t.Error("Generated '"+symbol+"' but this is not in alphabetic:", alphabetic)
 		}
 	}
 
 	// digit
 	for i := 0; i < 100; i++ {
-		char, err = randElem(digit)
+		symbol, err = randElem(digit)
 		if err != nil {
 			t.Error("Generating random digit failed", err.Error())
-		} else if !digit[char] {
-			t.Error("Generated '"+char+"' but this is not in digit:", digit)
+		} else if !digit[symbol] {
+			t.Error("Generated '"+symbol+"' but this is not in digit:", digit)
 		}
 	}
 
 	// special
 	for i := 0; i < 1000; i++ {
-		char, err = randElem(special)
+		symbol, err = randElem(special)
 		if err != nil {
-			t.Error("Generating random special character failed", err.Error())
-		} else if !special[char] {
-			t.Error("Generated '"+char+"' but this is not in special:", special)
+			t.Error("Generating random special symbol failed", err.Error())
+		} else if !special[symbol] {
+			t.Error("Generated '"+symbol+"' but this is not in special:", special)
 		}
 	}
 
 	// spaces
 	for i := 0; i < 10; i++ {
-		char, err = randElem(space)
+		symbol, err = randElem(space)
 		if err != nil {
-			t.Error("Generating random space character failed", err.Error())
-		} else if !space[char] {
-			t.Error("Generated '"+char+"' but this is not in space:", space)
+			t.Error("Generating random space symbol failed", err.Error())
+		} else if !space[symbol] {
+			t.Error("Generated '"+symbol+"' but this is not in space:", space)
 		}
 	}
 }

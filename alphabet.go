@@ -2,9 +2,9 @@ package main
 
 import "errors"
 
-type charset map[string]bool
+type alphabet map[string]bool
 
-var alphabet = charset{
+var alphabetic = alphabet{
 	"a": true, "A": true,
 	"b": true, "B": true,
 	"c": true, "C": true,
@@ -33,70 +33,70 @@ var alphabet = charset{
 	"z": true, "Z": true,
 }
 
-var digit = charset{
+var digit = alphabet{
 	"0": true, "1": true, "2": true, "3": true, "4": true,
 	"5": true, "6": true, "7": true, "8": true, "9": true,
 }
 
-var special = charset{
+var special = alphabet{
 	"~": true, "!": true, "@": true, "#": true, "$": true, "%": true, "^": true, "&": true, "*": true, "(": true, ")": true,
 	"-": true, "_": true, "+": true, "=": true, "{": true, "}": true, "[": true, "]": true, "\\": true, "|": true, ":": true,
 	";": true, "\"": true, "'": true, ",": true, "<": true, ".": true, ">": true, "?": true, "/": true, "`": true,
 }
 
-var space = charset{
+var space = alphabet{
 	" ": true,
 }
 
-var english = charset{
+var englishWords = alphabet{
 	"this": true,
 }
 
-var charsFrom = map[string]charset{
-	"alphabet": alphabet,
-	"digit":    digit,
-	"special":  special,
-	"space":    space,
-	"english":  english,
+var symbolsFrom = map[string]alphabet{
+	"alphabetic":   alphabetic,
+	"digit":        digit,
+	"special":      special,
+	"space":        space,
+	"englishWords": englishWords,
 }
 
-// getCharSubsets returns the charSubsets based on input
+// getSymbolSubsets returns the symbolSubsets based on input
 // NB: Calling function cannot do spaces at this stage
-func getCharSubsets(sample string) (map[string]bool, error) {
+func getSymbolSubsets(sample string) (map[string]bool, error) {
 	if len(sample) > 4 {
-		return map[string]bool{}, errors.New("Too many characters. You only need 4 at most.")
+		return map[string]bool{}, errors.New("Too many symbols. You only need 4 at most.")
 	}
-	charSubsets := map[string]bool{}
+	symbolSubsets := map[string]bool{}
 	for _, c := range []rune(sample) {
-		if alphabet[string(c)] {
-			charSubsets["alphabet"] = true
+		if alphabetic[string(c)] {
+			symbolSubsets["alphabetic"] = true
 		} else if digit[string(c)] {
-			charSubsets["digit"] = true
+			symbolSubsets["digit"] = true
 		} else if special[string(c)] {
-			charSubsets["special"] = true
+			symbolSubsets["special"] = true
 		} else if space[string(c)] {
-			charSubsets["space"] = true
+			symbolSubsets["space"] = true
 		} else {
-			return map[string]bool{}, errors.New("Invalid character used: \"" + string(c) + "\"")
+			return map[string]bool{}, errors.New("Invalid symbol used: \"" + string(c) + "\"")
 		}
 	}
-	return charSubsets, nil
+	return symbolSubsets, nil
 }
 
-// valid returns a character set containing all of the valid characters
-func valid(charSubsets map[string]bool) charset {
-	sets := []charset{}
-	for subset, include := range charSubsets {
+// valid returns a symbol set containing all of the valid symbols
+func valid(symbolSubsets map[string]bool) alphabet {
+	sets := []alphabet{}
+	for subset, include := range symbolSubsets {
 		if include {
-			sets = append(sets, charsFrom[subset])
+			sets = append(sets, symbolsFrom[subset])
 		}
 	}
 	return union(sets...)
 }
 
 // union takes the union of any number of sets of runes
-func union(sets ...charset) charset {
-	unionSet := make(charset)
+func union(sets ...alphabet) alphabet {
+	unionSet := make(alphabet)
 	for _, set := range sets {
 		for elem, in := range set {
 			// If it"s in this set or already in unionSet
@@ -107,7 +107,7 @@ func union(sets ...charset) charset {
 }
 
 // getList turns a set of runes into a slice of runes
-func getList(set charset) []string {
+func getList(set alphabet) []string {
 	list := make([]string, 0, len(set))
 	for elem, in := range set {
 		if in {
@@ -118,9 +118,9 @@ func getList(set charset) []string {
 }
 
 // Pretty printing for debug
-func (set charset) String() string {
+func (set alphabet) String() string {
 	empty := true
-	display := "charset{"
+	display := "alphabet{"
 	for c, in := range set {
 		if in {
 			display += "\""

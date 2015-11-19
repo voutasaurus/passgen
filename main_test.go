@@ -62,8 +62,8 @@ func TestRandomPasswordOneArg(t *testing.T) {
 		t.Error("Expected postmessage of: '" + postmessage2 + "' Got: '" + post2 + "'")
 	}
 
-	// Check char set membership
-	all := union(alphabet, digit, special)
+	// Check symbol set membership
+	all := union(alphabetic, digit, special)
 	for _, x := range []rune(pass) {
 		if !all[string(x)] {
 			t.Error("pass =", pass, "contains", string(x), "but this is not in", all)
@@ -184,7 +184,7 @@ func TestRandomPasswordSetMembership(t *testing.T) {
 
 	app := randomPasswordApp(testWriter)
 
-	all := union(alphabet, digit, special)
+	all := union(alphabetic, digit, special)
 
 	input := []string{"passgen", "-l", strconv.Itoa(0)}
 	for n := 0; n < 100; n++ {

@@ -37,7 +37,7 @@ func randomPasswordApp(out io.Writer) *cli.App {
 		},
 	}
 	app.Action = func(c *cli.Context) {
-		charSubsets, subsetErr := getCharSubsets(c.String("chars"))
+		symbolSubsets, subsetErr := getSymbolSubsets(c.String("chars"))
 		if subsetErr != nil {
 			fmt.Fprintln(out, "Could not generate a random password successfully.")
 			fmt.Fprintln(out, subsetErr)
@@ -53,13 +53,13 @@ func randomPasswordApp(out io.Writer) *cli.App {
 		}
 
 		// generate the password
-		var use charset
+		var symbolSet alphabet
 		if c.Bool("words") {
-			use = english
+			symbolSet = englishWords
 		} else {
-			use = valid(charSubsets)
+			symbolSet = valid(symbolSubsets)
 		}
-		password, err := generate(length, use)
+		password, err := generate(length, symbolSet)
 		if err != nil {
 			fmt.Fprintln(out, "Could not generate a random password successfully.")
 			fmt.Fprintln(out, err)
