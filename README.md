@@ -24,33 +24,7 @@ passgen -l 1 -c a
 - This will generate a random string of length 1 from lowercase and uppercase.
 
 passgen -h
-- This will print the following:
-
-> NAME:
-   
->  passgen - generate a random password
-
-> USAGE:
-   
->  passgen [global options] command [command options] [arguments...]
-   
-> VERSION:
-   
->   0.0.0
-   
-> COMMANDS:
-   
->   help, h	Shows a list of commands or help for one command
-   
-> GLOBAL OPTIONS:
-
->   --chars, -c "a1*"	specify which character sets to include in the generated password
- 
->   --length, -l "20"	specify the length of the generated password
-
->   --help, -h		show help
-
->   --version, -v	print the version
+- This will print the help output.
 
 
 Build instructions
