@@ -48,10 +48,6 @@ var space = alphabet{
 	" ": true,
 }
 
-var englishWords = alphabet{
-	"this": true,
-}
-
 var symbolsFrom = map[string]alphabet{
 	"alphabetic":   alphabetic,
 	"digit":        digit,
