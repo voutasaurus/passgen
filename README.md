@@ -27,7 +27,7 @@ passgen -h
 - This will print the help output.
 
 
-Build instructions
+Build Instructions
 ==================
 
 First install and set up Go:
