@@ -51,3 +51,4 @@ Run the following commands:
 - go build
 
 Copy the resultant executable (passgen) to a path already in $PATH.
+
